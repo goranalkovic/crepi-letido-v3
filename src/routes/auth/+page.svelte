@@ -13,6 +13,10 @@
 	let emailValid = $derived(emailRegExp.test(emailValue));
 </script>
 
+<svelte:head>
+	<title>Prijava | ČL</title>
+</svelte:head>
+
 <div class="flex flex-col items-center justify-center w-screen h-screen gap-2">
 	<Card.Root class="w-full max-w-sm">
 		<Card.Header>

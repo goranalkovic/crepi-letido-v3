@@ -44,6 +44,10 @@
 	});
 </script>
 
+<svelte:head>
+   <title>Gablec overview | ČL</title>
+</svelte:head>
+
 {#if hasError}
 	<Alert.Root>
 		<Alert.Title>Nekaj se zblesiralo.</Alert.Title>

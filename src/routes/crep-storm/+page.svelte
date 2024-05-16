@@ -7,6 +7,10 @@
 	let buttonDisabled = $state(false);
 </script>
 
+<svelte:head>
+	<title>Črep-storm™ | ČL</title>
+</svelte:head>
+
 <div class="w-full max-w-lg m-auto space-y-4">
 	<Tornado class="mx-auto size-20 accent-current" />
 

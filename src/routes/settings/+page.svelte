@@ -1,6 +1,4 @@
 <script>
-	import Settings from 'lucide-svelte/icons/settings';
-
 	import * as Card from '$lib/components/ui/card';
 	import { Input } from '$lib/components/ui/input';
 	import { Label } from '$lib/components/ui/label';
@@ -56,6 +54,10 @@
 		themeMode: userData?.options?.themeMode ?? 'system',
 	});
 </script>
+
+<svelte:head>
+   <title>Settings | ČL</title>
+</svelte:head>
 
 <form method="POST" action="?/update" class="flex flex-col items-end w-full max-w-md gap-4">
 	<Card.Root class="w-full">
