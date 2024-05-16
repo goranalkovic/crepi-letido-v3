@@ -1,14 +1,12 @@
 <script>
 // @ts-nocheck
-
 	import '../app.css';
-
-	// import { ModeWatcher } from "mode-watcher";
 
 	import { goto, invalidate } from '$app/navigation';
 	import { page } from '$app/stores';
 	import PageTitle from '$lib/PageTitle.svelte';
 	import SideRail from '$lib/SideRail.svelte';
+	import { setUpColorMode } from '$lib/dark-mode-listener';
 
 	let { data, children } = $props();
 	let { session, supabase, userData } = $derived(data);
@@ -49,20 +47,13 @@
 	};
 
 	$effect.pre(() => {
-		const themeColor = userData?.options?.themeColor ?? 'default';
-		const themeMode = userData?.options?.themeMode ?? 'system';
+		const removeListener = setUpColorMode();
 
-		if (themeColor === 'default') {
-			document.documentElement.removeAttribute('cl-theme');
-		} else {
-			document.documentElement.setAttribute('cl-theme', themeColor);
-		}
-
-		if (themeMode === 'dark' || (themeMode === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-			document.documentElement.classList.add('dark');
-		} else {
-			document.documentElement.classList.remove('dark');
-		}
+		return () => {
+			if (typeof removeListener === 'function') {
+				removeListener();
+			}
+		};
 	});
 </script>
 
@@ -75,5 +66,3 @@
 		{@render children()}
 	</main>
 </div>
-
-<!-- <ModeWatcher /> -->

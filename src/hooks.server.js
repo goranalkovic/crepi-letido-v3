@@ -86,7 +86,24 @@ const authGuard = async ({ event, resolve }) => {
 		return redirect(303, '/gableci')
 	}
 
-	return resolve(event);
+	const { data: userData } = await event.locals.supabase.from('users').select().eq('email', user?.email).maybeSingle();
+
+	let colorTheme = '';
+
+	if (userData?.options?.themeColor !== 'default') {
+		colorTheme = `cl-theme="${userData?.options?.themeColor}"`;
+	}
+
+	let darkClass = '';
+	const themeMode = userData?.options?.themeMode ?? 'system';
+
+	if (themeMode === 'dark') {
+		darkClass = 'dark';
+	}
+
+	return resolve(event, {
+		transformPageChunk: ({ html }) => html.replace('<html lang="en" class="size-full">', `<html lang="en" class="size-full ${darkClass}" cl-theme-mode="${themeMode}" ${colorTheme}>`)
+	});
 }
 
 export const handle = sequence(supabase, authGuard)
