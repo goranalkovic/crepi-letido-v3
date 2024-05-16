@@ -86,12 +86,32 @@ export const load = async ({ depends, locals: { supabase, user } }) => {
 				hasIntersect: userStatisticsData.every((userData) => Object.keys(userData.numMealsOrdered).includes(i.restaurant.slug)),
 			}
 		}))
+		.map((i) => ({
+			...i,
+			statistics: {
+				...i.statistics,
+				intersectBreakers: i.statistics.hasIntersect ? false : usersWithSelections.map((userData) => {
+					if (Object.keys(userData.selected).includes(i.restaurant.slug)) {
+						return null;
+					}
+
+					return userData.user;
+				}).filter(Boolean),
+			},
+		}))
 		.toSorted((a, b) => {
 			if (a.statistics.totalMealsOrdered === b.statistics.totalMealsOrdered) {
 				return 0;
 			}
 
 			return b.statistics.totalMealsOrdered - a.statistics.totalMealsOrdered;
+		})
+		.toSorted((a, b) => {
+			if (a.statistics.intersectBreakers?.length === b.statistics.intersectBreakers?.length) {
+				return 0;
+			}
+
+			return b.statistics.intersectBreakers?.length - a.statistics.intersectBreakers?.length;
 		})
 		.toSorted((a, b) => {
 			if (a.statistics.hasIntersect && b.statistics.hasIntersect) {

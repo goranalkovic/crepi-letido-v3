@@ -8,8 +8,10 @@
 	import Handshake from 'lucide-svelte/icons/handshake';
 	import CloudRainWind from 'lucide-svelte/icons/cloud-rain-wind';
 	import Sticker from 'lucide-svelte/icons/sticker';
+	import Users from 'lucide-svelte/icons/users';
+	import CircleCheckBig from 'lucide-svelte/icons/circle-check-big';
 
-	import { slide, scale, blur } from 'svelte/transition';
+	import { slide, scale } from 'svelte/transition';
 	import { flip } from 'svelte/animate';
 
 	import { Button } from '$lib/components/ui/button';
@@ -18,6 +20,7 @@
 	import * as Tooltip from '$lib/components/ui/tooltip';
 	import * as Alert from '$lib/components/ui/alert';
 	import { Separator } from '$lib/components/ui/separator';
+	import * as HoverCard from '$lib/components/ui/hover-card';
 
 	let { data } = $props();
 	let { supabase, possibleSelections, hasError, displayedRestaurants, numPeoplePicked } = $derived(data);
@@ -45,7 +48,7 @@
 </script>
 
 <svelte:head>
-   <title>Gablec overview | ČL</title>
+	<title>Gablec overview | ČL</title>
 </svelte:head>
 
 {#if hasError}
@@ -64,7 +67,7 @@
 		</Card.Header>
 		<Separator />
 		<Card.Content class="p-6">
-			<Button href='/gableci/pick'>
+			<Button href="/gableci/pick">
 				<Sticker class="mr-2 size-5" />
 				Kaj se čeka?
 			</Button>
@@ -72,8 +75,8 @@
 	</Card.Root>
 {/if}
 
-{#each displayedRestaurants as { id, meals, restaurant: { name, phone, slug, url, delivery, urlType }, statistics: { totalMealsOrdered, hasIntersect } } (id)}
-	<div class="flex gap-8 pb-4" transition:scale={{ start: 0.95 }} animate:flip={{ duration: 500 }}>
+{#each displayedRestaurants as { id, meals, restaurant: { name, phone, slug, url, delivery, urlType }, statistics: { intersectBreakers, hasIntersect } } (id)}
+	<div class="flex gap-8 pb-8 border-b last:border-b-0" transition:scale={{ start: 0.95 }} animate:flip={{ duration: 500 }}>
 		<Card.Root class="sticky self-start min-w-96 top-8">
 			<Card.Header>
 				<Card.Title class="flex items-center gap-2 mb-3">
@@ -109,14 +112,7 @@
 			</Card.Header>
 		</Card.Root>
 
-		<div class="space-y-1.5 w-full max-w-2xl p-1 rounded-lg border transition-colors {hasIntersect && numPeoplePicked > 1 ? 'border-primary/25 bg-gradient-to-br from-primary/5 to-primary/0' : 'border-transparent'}">
-			{#if hasIntersect && numPeoplePicked > 1}
-				<p transition:scale={{ start: 0.85 }} class="w-fit flex items-center gap-1 px-2 text-base font-semibold py-1.5 bg-gradient-to-tr from-primary to-primary/75 text-primary-foreground rounded-md">
-					<Handshake class="size-6" />
-					Intersect
-				</p>
-			{/if}
-
+		<div class="space-y-1.5 w-full max-w-lg p-1 rounded-lg">
 			{#each meals as { name, price, meta }, i (i)}
 				{#if possibleSelections[slug][i].selected.length > 0}
 					<div transition:slide class="flex items-center w-full p-2 space-x-3 transition duration-700 rounded-lg">
@@ -154,6 +150,38 @@
 					</div>
 				{/if}
 			{/each}
+		</div>
+
+		<div class="flex items-center justify-center h-40 w-60">
+			{#if hasIntersect && numPeoplePicked > 1}
+				<div class="flex flex-col items-center justify-center gap-1.5 p-3 text-xs font-medium text-center border rounded-md bg-background/50 text-accent-foreground shadow-sm size-24">
+					<Handshake class="size-6 text-primary " />
+					Intersect
+				</div>
+			{:else}
+				<HoverCard.Root>
+					<HoverCard.Trigger>
+						<div class="inline-flex items-center gap-1 transition text-accent-foreground/50 hover:text-primary">
+							<span class="text-base font-medium tabular-nums">{intersectBreakers.length}&rarr;</span>
+							<CircleCheckBig class="size-7" />
+						</div>
+					</HoverCard.Trigger>
+					<HoverCard.Content class="w-80">
+						<h3 class="mb-3 text-xl font-semibold tracking-tight">Intersect breakers</h3>
+						{#each intersectBreakers as { avatar, firstName, lastName }}
+							<div class="flex items-center gap-2">
+								<Avatar.Root class="hidden size-8 sm:flex">
+									<Avatar.Image src="/profile-pictures/{avatar}.jpg" alt="{firstName} {lastName}" />
+									<Avatar.Fallback>{firstName?.charAt(0) ?? '-'}{lastName?.charAt(0) ?? '-'}</Avatar.Fallback>
+								</Avatar.Root>
+								<div class="grid gap-1">
+									<p class="text-sm font-medium leading-none">{firstName} {lastName}</p>
+								</div>
+							</div>
+						{/each}
+					</HoverCard.Content>
+				</HoverCard.Root>
+			{/if}
 		</div>
 	</div>
 {/each}
