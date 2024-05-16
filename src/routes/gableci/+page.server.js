@@ -93,6 +93,17 @@ export const load = async ({ depends, locals: { supabase, user } }) => {
 
 			return b.statistics.totalMealsOrdered - a.statistics.totalMealsOrdered;
 		})
+		.toSorted((a, b) => {
+			if (a.statistics.hasIntersect && b.statistics.hasIntersect) {
+				return 0;
+			}
+
+			if (a.statistics.hasIntersect) {
+				return -1;
+			}
+
+			return 1;
+		});
 
 	return {
 		restaurants: restaurantData ?? [],
