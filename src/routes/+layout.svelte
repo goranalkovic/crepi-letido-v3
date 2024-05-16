@@ -3,7 +3,7 @@
 
 	import '../app.css';
 
-	import { ModeWatcher } from "mode-watcher";
+	// import { ModeWatcher } from "mode-watcher";
 
 	import { goto, invalidate } from '$app/navigation';
 	import { page } from '$app/stores';
@@ -30,7 +30,7 @@
 
 				setTimeout(() => {
 					goto('/', { invalidateAll: true });
-				}, timeout);
+				}, 180000);
 			}
 			if (newSession?.expires_at !== session?.expires_at) {
 				invalidate('supabase:auth');
@@ -68,4 +68,5 @@
 		{@render children()}
 	</main>
 </div>
-<ModeWatcher />
+
+<!-- <ModeWatcher /> -->

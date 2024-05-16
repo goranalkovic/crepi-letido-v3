@@ -19,7 +19,7 @@
 	import Sun from 'lucide-svelte/icons/sun';
 	import Moon from 'lucide-svelte/icons/moon';
 
-	import { resetMode, setMode, userPrefersMode } from 'mode-watcher';
+	// import { setMode, userPrefersMode } from 'mode-watcher';
 
 	import { page } from '$app/stores';
 
@@ -123,7 +123,7 @@
 		</Tooltip.Root>
 	</nav>
 	<nav class="flex flex-col items-center gap-4 px-2 mt-auto sm:py-5">
-		<Tooltip.Root>
+		<!-- <Tooltip.Root>
 			<Tooltip.Trigger asChild let:builder>
 				<div class="flex" use:builder.action {...builder}>
 					<DropdownMenu.Root>
@@ -150,7 +150,7 @@
 				</div>
 			</Tooltip.Trigger>
 			<Tooltip.Content side="right">Luk i fil</Tooltip.Content>
-		</Tooltip.Root>
+		</Tooltip.Root> -->
 
 		<Separator />
 

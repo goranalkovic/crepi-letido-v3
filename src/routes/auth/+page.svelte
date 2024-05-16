@@ -24,12 +24,15 @@
 				<div class="flex w-full max-w-sm flex-col gap-1.5">
 					<Label for="email">Email</Label>
 					<Input type="email" id="email" name="email" placeholder="email" bind:value={emailValue} />
-					{#if !emailValid}
-						<p transition:slide class="text-sm text-muted-foreground">E-mail is not valid!</p>
-					{/if}
 				</div>
 
-				<Button type="submit" disabled={!emailValid}>Ideme!</Button>
+				<div class="flex items-center justify-between w-full gap-4">
+					{#if !emailValid}
+						<p transition:slide class="text-sm text-destructive">E-mail is not valid!</p>
+					{/if}
+
+					<Button type="submit" disabled={!emailValid}>Ideme!</Button>
+				</div>
 			</form>
 		</Card.Content>
 	</Card.Root>
