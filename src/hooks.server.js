@@ -67,7 +67,7 @@ const supabase = async ({ event, resolve }) => {
 
 const authGuard = async ({ event, resolve }) => {
 	const { session, user } = await event.locals.safeGetSession()
-	event.locals.session = session
+	// event.locals.session = session
 	event.locals.user = user
 
 	// if (!event.locals.session && event.url.pathname.startsWith('/gableci')) {
@@ -78,13 +78,13 @@ const authGuard = async ({ event, resolve }) => {
 	// 	return redirect(303, '/gableci')
 	// }
 
-	// if (!session && event.url.pathname.startsWith('/gableci')) {
-	// 	return redirect(303, '/auth')
-	// }
+	if (!session && event.url.pathname.startsWith('/gableci')) {
+		return redirect(303, '/auth')
+	}
 
-	// if (session && event.url.pathname === '/auth') {
-	// 	return redirect(303, '/gableci')
-	// }
+	if (session && event.url.pathname === '/auth') {
+		return redirect(303, '/gableci')
+	}
 
 	return resolve(event);
 }
