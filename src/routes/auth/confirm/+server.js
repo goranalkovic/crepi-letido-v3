@@ -3,7 +3,7 @@ import { redirect } from '@sveltejs/kit'
 
 export const GET = async ({ url, locals: { supabase } }) => {
 	const token_hash = url.searchParams.get('token_hash')
-	const type = 'email'; // url.searchParams.get('type') | 'email'
+	const type = url.searchParams.get('type') | 'email'
 	const next = url.searchParams.get('next') ?? '/'
 
 	/**
@@ -19,20 +19,16 @@ export const GET = async ({ url, locals: { supabase } }) => {
 	if (token_hash && type) {
 		const { error } = await supabase.auth.verifyOtp({ type, token_hash })
 
-		console.log(error);
-
+		console.error(error);
 
 		if (!error) {
 			redirectTo.searchParams.delete('next')
 			return redirect(303, redirectTo)
-		} else {
-			redirectTo.pathname =  `/auth/error?msg=${error.message}`
-			return redirect(303, redirectTo)
 		}
 	}
 
-	console.error({token_hash, 		type,		next});
+	console.error({ token_hash, type, next });
 
-	redirectTo.pathname =  `/auth/error?msg=crklo`
+	redirectTo.pathname = '/auth/error';
 	return redirect(303, redirectTo)
 }
