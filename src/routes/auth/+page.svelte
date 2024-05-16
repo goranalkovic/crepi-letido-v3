@@ -26,12 +26,12 @@
 					<Input type="email" id="email" name="email" placeholder="email" bind:value={emailValue} />
 				</div>
 
-				<div class="flex items-center justify-between w-full gap-4">
+				<div class="flex items-center w-full gap-4">
 					{#if !emailValid}
 						<p transition:slide class="text-sm text-destructive">E-mail is not valid!</p>
 					{/if}
 
-					<Button type="submit" disabled={!emailValid}>Ideme!</Button>
+					<Button class="ml-auto" type="submit" disabled={!emailValid}>Ideme!</Button>
 				</div>
 			</form>
 		</Card.Content>
