@@ -125,6 +125,16 @@ export const load = async ({ depends, locals: { supabase, user } }) => {
 			return 1;
 		});
 
+	const finalize1DoneUsers = existingData.filter(({ final }) => final === true);
+
+	const { data: currentUserHasFinalized1 } = await supabase
+		.from('meal-selections')
+		.select('final')
+		.eq('user', user?.email)
+		.gte('created', `${currentDate} 00:00:00`)
+		.lte('created', `${currentDate} 23:59:59`)
+		.maybeSingle();
+
 	return {
 		restaurants: restaurantData ?? [],
 		customRestaurants: customRestaurantData ?? [],
@@ -135,5 +145,7 @@ export const load = async ({ depends, locals: { supabase, user } }) => {
 		displayedRestaurants,
 		numPeoplePicked: usersWithSelections?.length ?? 0,
 		hasError: err1 || err2 || err3 || err4,
+		finalize1DoneUsers,
+		currentUserHasFinalized1: currentUserHasFinalized1?.final,
 	};
 };

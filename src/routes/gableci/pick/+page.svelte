@@ -7,6 +7,7 @@
 	import BookMarked from 'lucide-svelte/icons/book-marked';
 	import ShieldAlert from 'lucide-svelte/icons/shield-alert';
 	import ShieldX from 'lucide-svelte/icons/shield-x';
+	import RouteOff from 'lucide-svelte/icons/route-off';
 
 	import { Button } from '$lib/components/ui/button';
 	import * as Card from '$lib/components/ui/card';
@@ -17,7 +18,7 @@
 	import { getCurrentDate } from '$lib/current-date.js';
 
 	let { data } = $props();
-	let { supabase, restaurants, customRestaurants, hasError, user, userSelections: rawUserSelections } = $derived(data);
+	let { supabase, restaurants, customRestaurants, hasError, user, userSelections: rawUserSelections, currentUserHasFinalized1 } = $derived(data);
 
 	const currentDate = getCurrentDate();
 
@@ -57,6 +58,21 @@
 	};
 
 	const handleChange = debounce(updateData, 500);
+
+	const handleFinalize = async (unlock = false) => {
+		const currentDate = getCurrentDate();
+
+		await supabase
+			.from('meal-selections')
+			.update({
+				final: !unlock,
+			})
+			.eq('user', user.email)
+			.gte('created', `${currentDate} 00:00:00`)
+			.lte('created', `${currentDate} 23:59:59`);
+
+			await invalidateAll();
+	};
 
 	$effect(() => {
 		const restaurantDataChannel = supabase
@@ -148,36 +164,53 @@
 	</div>
 {/snippet}
 
-{#if restaurants?.length < 1 && customRestaurants?.length < 1}
-	<Card.Root class="w-full max-w-md m-auto text-center">
-		<Card.Header class="py-10">
-			<ShieldX class="mx-auto text-destructive size-16 " />
-			<Card.Title class="text-2xl md:text-3xl">Nekaj gadno ne štima</Card.Title>
-			<Card.Description class="text-lg">Nijenog restorana nema?!</Card.Description>
-		</Card.Header>
-	</Card.Root>
-{/if}
+{#if !currentUserHasFinalized1}
+	 {#if restaurants?.length < 1 && customRestaurants?.length < 1}
+		<Card.Root class="w-full max-w-md m-auto text-center">
+			<Card.Header class="py-10">
+				<ShieldX class="mx-auto text-destructive size-16 " />
+				<Card.Title class="text-2xl md:text-3xl">Nekaj gadno ne štima</Card.Title>
+				<Card.Description class="text-lg">Nijenog restorana nema?!</Card.Description>
+			</Card.Header>
+		</Card.Root>
+	{/if}
 
-{#if restaurants?.length > 0}
-	 <h2 class="pb-2 text-3xl font-semibold tracking-tight transition-colors border-b first:mt-0">Dnevni izbor</h2>
+	{#if restaurants?.length > 0}
+		<h2 class="pb-2 text-3xl font-semibold tracking-tight transition-colors border-b first:mt-0">Dnevni izbor</h2>
+	{:else}
+		<Card.Root class="w-full max-w-md m-auto text-center">
+			<Card.Header class="py-10">
+				<ShieldAlert class="mx-auto text-slate-400 size-16 dark:text-slate-600" />
+				<Card.Title class="text-2xl md:text-3xl">Nekaj ne štima</Card.Title>
+				<Card.Description class="text-base">Glavnih restorana nema. Možda je presušil source? Možda je crkel cron za update? Pitaj Goca.</Card.Description>
+			</Card.Header>
+		</Card.Root>
+	{/if}
+
+	{#each restaurants as restaurant (restaurant.id)}
+		{@render gablecDisplay(restaurant)}
+	{/each}
+
+	{#if customRestaurants?.length > 0}
+		<h2 class="pb-2 text-3xl font-semibold tracking-tight transition-colors border-b first:mt-0">Stalna postava</h2>
+	{/if}
+
+	{#each customRestaurants as restaurant (restaurant.id)}
+		{@render gablecDisplay(restaurant)}
+	{/each}
 {:else}
 	<Card.Root class="w-full max-w-md m-auto text-center">
 		<Card.Header class="py-10">
-			<ShieldAlert class="mx-auto text-slate-400 size-16 dark:text-slate-600" />
-			<Card.Title class="text-2xl md:text-3xl">Nekaj ne štima</Card.Title>
-			<Card.Description class="text-base">Glavnih restorana nema. Možda je presušil source? Možda je crkel cron za update? Pitaj Goca.</Card.Description>
+			<RouteOff class="mx-auto text-destructive size-16 " />
+			<Card.Title class="text-2xl md:text-3xl">Nema više cile-mile</Card.Title>
+			<Card.Description class="text-lg">
+				Sve je finalizirano
+
+			</Card.Description>
 		</Card.Header>
+		<Card.Footer class="flex flex-col items-center">
+			<Button href="/gableci/vote">Idi na finalni izbor</Button>
+			<Button variant="link" on:click={() => handleFinalize(true)} class="p-0 text-xs font-normal tracking-wide select-none opacity-5 hover:opacity-10 transiton">Otključaj</Button>
+		</Card.Footer>
 	</Card.Root>
 {/if}
-
-{#each restaurants as restaurant (restaurant.id)}
-	{@render gablecDisplay(restaurant)}
-{/each}
-
-{#if customRestaurants?.length > 0}
-	<h2 class="pb-2 text-3xl font-semibold tracking-tight transition-colors border-b first:mt-0">Stalna postava</h2>
-{/if}
-
-{#each customRestaurants as restaurant (restaurant.id)}
-	{@render gablecDisplay(restaurant)}
-{/each}
