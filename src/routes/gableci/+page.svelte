@@ -106,7 +106,7 @@
 			</Card.Header>
 		</Card.Root>
 
-		<div class="space-y-1.5 w-full max-w-2xl p-1 rounded-lg border transition-colors {hasIntersect ? 'border-primary/25 bg-gradient-to-br from-primary/5 to-primary/0' : 'border-transparent'}">
+		<div class="space-y-1.5 w-full max-w-2xl p-1 rounded-lg border transition-colors {hasIntersect && numPeoplePicked > 1 ? 'border-primary/25 bg-gradient-to-br from-primary/5 to-primary/0' : 'border-transparent'}">
 			{#if hasIntersect && numPeoplePicked > 1}
 				<p transition:scale={{ start: 0.85 }} class="w-fit flex items-center gap-1 px-2 text-base font-semibold py-1.5 bg-gradient-to-tr from-primary to-primary/75 text-primary-foreground rounded-md">
 					<Handshake class="size-6" />
