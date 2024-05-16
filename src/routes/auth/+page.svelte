@@ -7,7 +7,7 @@
 	import { Label } from '$lib/components/ui/label';
 	import { Button } from '$lib/components/ui/button';
 
-	let emailValue = $state('goran.alkovic@hotmail.com');
+	let emailValue = $state('');
 
 	const emailRegExp = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 	let emailValid = $derived(emailRegExp.test(emailValue));
