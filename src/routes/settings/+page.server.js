@@ -8,6 +8,7 @@ export const actions = {
 		const firstName = formData.get('first-name');
 		const lastName = formData.get('last-name');
 		const themeColor = formData.get('theme-color');
+		const themeMode = formData.get('theme-mode');
 
 		const { error } = await supabase.from('users').update({
 			avatar,
@@ -16,6 +17,7 @@ export const actions = {
 			options: {
 				...user.options,
 				themeColor: themeColor ?? 'default',
+				themeMode: themeMode ?? 'system',
 			},
 		}).eq('email', user.email);
 

@@ -50,11 +50,18 @@
 
 	$effect.pre(() => {
 		const themeColor = userData?.options?.themeColor ?? 'default';
+		const themeMode = userData?.options?.themeMode ?? 'system';
 
 		if (themeColor === 'default') {
 			document.documentElement.removeAttribute('cl-theme');
 		} else {
 			document.documentElement.setAttribute('cl-theme', themeColor);
+		}
+
+		if (themeMode === 'dark' || (themeMode === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+			document.documentElement.classList.add('dark');
+		} else {
+			document.documentElement.classList.remove('dark');
 		}
 	});
 </script>

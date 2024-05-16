@@ -11,7 +11,7 @@
 	import Separator from '$lib/components/ui/separator/separator.svelte';
 
 	let { data } = $props();
-	let { supabase, session, userData } = $state(data);
+	let { userData } = $state(data);
 
 	let formValid = $state(true);
 
@@ -44,6 +44,7 @@
 		lastName: userData?.lastName,
 		avatar: userData?.avatar,
 		themeColor: userData?.options?.themeColor ?? 'default',
+		themeMode: userData?.options?.themeMode ?? 'system',
 	});
 </script>
 
@@ -123,9 +124,38 @@
 	<Card.Root class="w-full">
 		<Card.Header>
 			<Card.Title>Sučelje</Card.Title>
-			<Card.Description>Zasad samo farbanje</Card.Description>
+			<Card.Description>Zasad samo farbanje i tak to</Card.Description>
 		</Card.Header>
 		<Card.Content class="space-y-4">
+			<div class="space-y-1.5">
+				<Label>Sunce, mesec i tak</Label>
+				<br />
+				<DropdownMenu.Root>
+					<DropdownMenu.Trigger asChild let:builder>
+						<Button class="justify-start w-full h-16 py-0" variant="outline" builders={[builder]}>
+							{formData?.themeMode}
+						</Button>
+					</DropdownMenu.Trigger>
+					<DropdownMenu.Content class="w-56">
+						<DropdownMenu.Label>Kak pa da svetli?</DropdownMenu.Label>
+						<DropdownMenu.Separator />
+						<DropdownMenu.RadioGroup bind:value={formData.themeMode}>
+							<DropdownMenu.RadioItem value='system'>
+								Kak šef hoće (system)
+							</DropdownMenu.RadioItem>
+							<DropdownMenu.RadioItem value='light'>
+								Vužgaj svetlo navek (light)
+							</DropdownMenu.RadioItem>
+							<DropdownMenu.RadioItem value='dark'>
+								Vampir sam (dark)
+							</DropdownMenu.RadioItem>
+						</DropdownMenu.RadioGroup>
+					</DropdownMenu.Content>
+				</DropdownMenu.Root>
+
+				<input type="hidden" name="theme-mode" value="{formData?.themeMode}">
+			</div>
+
 			<div class="space-y-1.5">
 				<Label>Tema sučelja</Label>
 				<br />
