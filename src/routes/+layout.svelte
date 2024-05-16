@@ -30,7 +30,7 @@
 
 				setTimeout(() => {
 					goto('/', { invalidateAll: true });
-				}, timeout);
+				}, 30000);
 			}
 			if (newSession?.expires_at !== session?.expires_at) {
 				invalidate('supabase:auth');

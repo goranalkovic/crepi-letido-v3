@@ -39,7 +39,7 @@ export const actions = {
 
 		if (error) {
 			console.error(error)
-			return redirect(303, '/auth/error')
+			return redirect(303, `/auth/error?msg=${error.message}`)
 		} else {
 			return redirect(303, '/check-email')
 		}
