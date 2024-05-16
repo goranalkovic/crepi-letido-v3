@@ -3,8 +3,10 @@ import { redirect } from '@sveltejs/kit'
 
 export const GET = async ({ url, locals: { supabase } }) => {
 	const token_hash = url.searchParams.get('token_hash')
-	const type = url.searchParams.get('type') | 'email'
-	const next = url.searchParams.get('next') ?? '/'
+	const type = url.searchParams.get('type') ?? 'email';
+	const next = url.searchParams.get('next') ?? '/';
+
+	console.error({ token_hash, type, next });
 
 	/**
 	 * Clean up the redirect URL by deleting the Auth flow parameters.
@@ -19,15 +21,15 @@ export const GET = async ({ url, locals: { supabase } }) => {
 	if (token_hash && type) {
 		const { error } = await supabase.auth.verifyOtp({ type, token_hash })
 
-		console.error(error);
-
 		if (!error) {
 			redirectTo.searchParams.delete('next')
 			return redirect(303, redirectTo)
+		} else {
+			console.error(error);
 		}
 	}
 
-	console.error({ token_hash, type, next });
+	console.error('auth - nije bilo ničega');
 
 	redirectTo.pathname = '/auth/error';
 	return redirect(303, redirectTo)

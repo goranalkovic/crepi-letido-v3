@@ -27,7 +27,7 @@
 				</div>
 
 				<div class="flex items-center w-full gap-4">
-					{#if !emailValid}
+					{#if !emailValid && emailValue?.length > 5}
 						<p transition:slide class="text-sm text-destructive">E-mail is not valid!</p>
 					{/if}
 
