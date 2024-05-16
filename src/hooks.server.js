@@ -91,7 +91,7 @@ const authGuard = async ({ event, resolve }) => {
 	let colorTheme = '';
 
 	if (userData?.options?.themeColor !== 'default') {
-		colorTheme = `cl-theme="${userData?.options?.themeColor}"`;
+		colorTheme = `cl-theme="${userData?.options?.themeColor ?? 'default'}"`;
 	}
 
 	let darkClass = '';
@@ -101,11 +101,13 @@ const authGuard = async ({ event, resolve }) => {
 		darkClass = 'dark';
 	}
 
+	const themeModeAttr = `cl-theme-mode="${themeMode}"`;
+
 	const radius = userData?.options?.themeBorderRadius ?? '0.75';
 	const radiusStyle = `style="--cl-radius: ${radius}rem"`;
 
 	return resolve(event, {
-		transformPageChunk: ({ html }) => html.replace('<html lang="en" class="size-full">', `<html lang="en" class="size-full ${darkClass}" ${radiusStyle} cl-theme-mode="${themeMode}" ${colorTheme}>`)
+		transformPageChunk: ({ html }) => html.replace('<html lang="en" class="size-full">', `<html lang="en" class="size-full ${darkClass}" ${radiusStyle} ${themeModeAttr} ${colorTheme}>`)
 	});
 }
 
