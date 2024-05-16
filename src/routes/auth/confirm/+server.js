@@ -31,6 +31,8 @@ export const GET = async ({ url, locals: { supabase } }) => {
 		}
 	}
 
-	redirectTo.pathname =  `/auth/error?msg=${error?.message}`
+	console.error({token_hash, 		type,		next});
+
+	redirectTo.pathname =  `/auth/error?msg=crklo`
 	return redirect(303, redirectTo)
 }
