@@ -1,10 +1,12 @@
 <script>
+	// @ts-nocheck
+
 	import * as Card from '$lib/components/ui/card';
 	import { Input } from '$lib/components/ui/input';
 	import { Label } from '$lib/components/ui/label';
 	import { Button } from '$lib/components/ui/button';
-	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
 	import * as Avatar from '$lib/components/ui/avatar';
+	import { Slider } from '$lib/components/ui/slider';
 
 	import Sun from 'lucide-svelte/icons/sun';
 	import Moon from 'lucide-svelte/icons/moon';
@@ -26,24 +28,34 @@
 		{ value: 'my10', label: 'Majcen' },
 		{ value: 'petarjadek', label: 'Petar' },
 		{ value: 'tamara', label: 'Tamara' },
-		{ value: 'ext1', label: 'Gost 1' },
-		{ value: 'ext2', label: 'Gost 2' },
-		{ value: 'ext3', label: 'Gost 3' },
-		{ value: 'ext4', label: 'Gost 4' },
-		{ value: 'ext5', label: 'Gost 5' },
-		{ value: 'ext6', label: 'Gost 6' },
-		{ value: 'ext7', label: 'Gost 7' },
-		{ value: 'ext8', label: 'Gost 8' },
-		{ value: 'ext9', label: 'Gost 9' },
-		{ value: 'ext10', label: 'Gost 10' },
+		{ value: 'ext1', label: 'Črep' },
+		{ value: 'ext2', label: 'Šturm' },
+		{ value: 'ext3', label: 'LED!!1!' },
+		{ value: 'ext4', label: 'Kamp' },
+		{ value: 'ext5', label: 'IksPe riba' },
+		{ value: 'ext6', label: 'IksPe kvakva' },
+		{ value: 'ext7', label: 'IksPe muzika' },
+		{ value: 'ext8', label: 'IksPe Hrca' },
+		{ value: 'ext9', label: 'IksPe Jurica' },
+		{ value: 'ext10', label: 'IksPe rafal' },
+	];
+
+	const themeNeutralOptions = [
+		{ value: 'default', label: 'Tema nije kamen', twClass: 'bg-stone-500' },
+		{ value: 'zinc', label: 'Zinkrono siva', twClass: 'bg-zinc-500' },
+		{ value: 'slate', label: 'Malo plava, malo siva?', twClass: 'bg-slate-500' },
+		{ value: 'gray', label: 'Jedna od nijansi', twClass: 'bg-gray-500' },
+		{ value: 'neutral', label: 'Ler-siva', twClass: 'bg-neutral-500' },
 	];
 
 	const themeColorOptions = [
-		{ value: 'default', label: 'Kak je inače', twClass: 'bg-zinc-500' },
+		{ value: 'magenta', label: 'Te-kom', twClass: 'bg-rose-500' },
 		{ value: 'blue', label: 'Plava', twClass: 'bg-blue-500' },
 		{ value: 'green', label: 'Zeljena', twClass: 'bg-green-500' },
-		{ value: 'orange', label: 'Žutislav', twClass: 'bg-orange-500' },
-		{ value: 'magenta', label: 'Te-kom', twClass: 'bg-rose-500' },
+		{ value: 'orange', label: 'Iskrasto narančasta', twClass: 'bg-orange-500' },
+		{ value: 'red', label: 'SDP red', twClass: 'bg-red-500' },
+		{ value: 'yellow', label: 'Žutislav', twClass: 'bg-yellow-500' },
+		{ value: 'violet', label: 'Teta Violeta', twClass: 'bg-violet-500' },
 	];
 
 	let formData = $state({
@@ -52,166 +64,151 @@
 		avatar: userData?.avatar,
 		themeColor: userData?.options?.themeColor ?? 'default',
 		themeMode: userData?.options?.themeMode ?? 'system',
+		themeBorderRadius: userData?.options?.themeBorderRadius ?? '0.75',
 	});
 </script>
 
 <svelte:head>
-   <title>Settings | ČL</title>
+	<title>Settings | ČL</title>
 </svelte:head>
 
-<form method="POST" action="?/update" class="flex flex-col items-end w-full max-w-md gap-4">
+<form method="POST" action="?/update" class="flex flex-col w-full max-w-screen-lg gap-4 lg:grid lg:grid-cols-2">
 	<Card.Root class="w-full">
-		<Card.Header>
+		<Card.Header class="border-b border-b-primary-accent">
 			<Card.Title>Nekaj o tebi</Card.Title>
 			<Card.Description>Nikaj preveč, samo osobni podaci</Card.Description>
 		</Card.Header>
-		<Card.Content class="space-y-4">
-			<div class="space-y-1.5">
-				<Label for="first-name">Ime</Label>
-				<Input type="text" id="first-name" name="first-name" placeholder="Ime" class="w-full" bind:value={formData.firstName} />
-				<!-- {#if !emailValid}
-					<p transition:slide class="text-sm text-muted-foreground">E-mail is not valid!</p>
-				{/if} -->
+		<Card.Content class="p-6 space-y-6">
+			<div class="gap-4 max-md:space-y-4 md:flex">
+				<div class="space-y-1.5">
+					<Label for="first-name">Ime</Label>
+					<Input type="text" id="first-name" name="first-name" placeholder="Ime" class="w-full" bind:value={formData.firstName} />
+					<!-- {#if !emailValid}
+						<p transition:slide class="text-sm text-muted-foreground">E-mail is not valid!</p>
+					{/if} -->
+				</div>
+
+				<div class="space-y-1.5">
+					<Label for="last-name">Prezime</Label>
+					<Input type="text" id="last-name" name="last-name" placeholder="Prezime" class="w-full" bind:value={formData.lastName} />
+					<!-- {#if !emailValid}
+						<p transition:slide class="text-sm text-muted-foreground">E-mail is not valid!</p>
+					{/if} -->
+				</div>
 			</div>
 
 			<div class="space-y-1.5">
-				<Label for="last-name">Ime</Label>
-				<Input type="text" id="last-name" name="last-name" placeholder="Prezime" class="w-full" bind:value={formData.lastName} />
-				<!-- {#if !emailValid}
-					<p transition:slide class="text-sm text-muted-foreground">E-mail is not valid!</p>
-				{/if} -->
-			</div>
+				<Label>Oštar život imam ja?</Label>
 
-			<div class="space-y-1.5">
-				<Label>Avatar</Label>
-				<br />
-				<DropdownMenu.Root>
-					<DropdownMenu.Trigger asChild let:builder>
-						<Button class="p-0 size-16" variant="outline" builders={[builder]}>
-							{#if formData?.avatar && !formData?.avatar?.startsWith('ext-')}
-								<Avatar.Root class="size-10">
-									<Avatar.Image src="/profile-pictures/{formData?.avatar}.jpg" alt={userData?.email} />
-									<Avatar.Fallback>{formData?.avatar}</Avatar.Fallback>
-								</Avatar.Root>
-							{:else}
-								<div class="flex items-center justify-center text-lg rounded-full size-10 bg-slate-600 text-slate-300">
-									{formData?.firstName?.charAt(0) ?? ''}{formData?.lastName?.charAt(0) ?? ''}
-								</div>
-							{/if}
-						</Button>
-					</DropdownMenu.Trigger>
-					<DropdownMenu.Content class="w-56">
-						<DropdownMenu.Label>Avatar</DropdownMenu.Label>
-						<DropdownMenu.Separator />
-						<DropdownMenu.RadioGroup bind:value={formData.avatar}>
-							<DropdownMenu.RadioItem value="">
-								<div class="flex items-center justify-center mr-2 rounded-full size-8 bg-slate-600 text-slate-300">
-									{formData?.firstName?.charAt(0) ?? ''}{formData?.lastName?.charAt(0) ?? ''}
-								</div>
-								Inicijali (nič)
-							</DropdownMenu.RadioItem>
-							<DropdownMenu.Separator />
-							{#each avatarOptions.filter(({ value }) => !value.startsWith('ext')) as { label, value }}
-								<DropdownMenu.RadioItem {value}>
-									<Avatar.Root class="mr-2 size-8">
-										<Avatar.Image src="/profile-pictures/{value}.jpg" alt={label} />
-										<Avatar.Fallback>{value}</Avatar.Fallback>
-									</Avatar.Root>
-									{label}
-								</DropdownMenu.RadioItem>
-							{/each}
-							<DropdownMenu.Separator />
-							{#each avatarOptions.filter(({ value }) => value.startsWith('ext')) as { label, value }}
-								<DropdownMenu.RadioItem {value}>
-									<Avatar.Root class="mr-2 size-8">
-										<Avatar.Image src="/profile-pictures/{value}.jpg" alt={label} />
-										<Avatar.Fallback>{value}</Avatar.Fallback>
-									</Avatar.Root>
-									{label}
-								</DropdownMenu.RadioItem>
-							{/each}
-						</DropdownMenu.RadioGroup>
-					</DropdownMenu.Content>
-				</DropdownMenu.Root>
-				<!-- {#if !emailValid}
-					<p transition:slide class="text-sm text-muted-foreground">E-mail is not valid!</p>
-				{/if} -->
-
-				<input type="hidden" name="avatar" value={formData?.avatar} />
+				<div class="flex gap-6 py-2">
+					<span class="inline-flex w-10 text-sm font-semibold select-none text-muted-foreground text-start">Da?</span>
+					<Slider value={[parseFloat(formData?.themeBorderRadius)]} min={0} max={1} step={0.1} onValueChange={(v) => (formData.themeBorderRadius = parseInt(v * 100) / 100)} />
+					<span class="inline-flex w-10 text-sm font-semibold select-none text-muted-foreground text-end">Ne?</span>
+				</div>
 			</div>
 		</Card.Content>
 	</Card.Root>
 
 	<Card.Root class="w-full">
-		<Card.Header>
-			<Card.Title>Sučelje</Card.Title>
-			<Card.Description>Zasad samo farbanje i tak to</Card.Description>
+		<Card.Header class="border-b border-b-primary-accent">
+			<Card.Title>Avatar</Card.Title>
+			<Card.Description>Najbitniji dio, logično</Card.Description>
 		</Card.Header>
-		<Card.Content class="space-y-4">
-			<div class="space-y-1.5">
-				<Label>Sunce, mesec i tak (svjetlina sučelja)</Label>
-				<br />
-				<DropdownMenu.Root>
-					<DropdownMenu.Trigger asChild let:builder>
-						<Button class="justify-start w-full h-16 py-0" variant="outline" builders={[builder]}>
-							{#if formData?.themeMode === 'light'}
-								<Sun class="mr-2 opacity-75 size-8" />
-								Vužgaj nek se troši
-							{:else if formData?.themeMode === 'dark'}
-								<Moon class="mr-2 opacity-75 size-8" />
-								Vampir mode
-							{:else}
-								<SunMoon class="mr-2 opacity-75 size-8" />
-								Kak šef odluči, tak bu (system)
-							{/if}
-						</Button>
-					</DropdownMenu.Trigger>
-					<DropdownMenu.Content class="w-56">
-						<DropdownMenu.Label>Kak pa da svetli?</DropdownMenu.Label>
-						<DropdownMenu.Separator />
-						<DropdownMenu.RadioGroup bind:value={formData.themeMode}>
-							<DropdownMenu.RadioItem value="system">Kak šef hoće (system)</DropdownMenu.RadioItem>
-							<DropdownMenu.RadioItem value="light">Vužgaj svetlo navek (light)</DropdownMenu.RadioItem>
-							<DropdownMenu.RadioItem value="dark">Vampir sam (dark)</DropdownMenu.RadioItem>
-						</DropdownMenu.RadioGroup>
-					</DropdownMenu.Content>
-				</DropdownMenu.Root>
-
-				<input type="hidden" name="theme-mode" value={formData?.themeMode} />
+		<Card.Content class="flex flex-col gap-2 p-6">
+			<Label>Ljudeki</Label>
+			<div class="flex flex-wrap gap-2 mb-2">
+				{#each avatarOptions.filter(({ value }) => !value.startsWith('ext')) as { label, value }}
+					<Button class="justify-start h-12 px-2 w-36 wrap {formData?.avatar === value && 'border-2 border-primary'}" on:click={() => (formData.avatar = value)} variant="outline">
+						<Avatar.Root class="mr-2 size-8">
+							<Avatar.Image src="/profile-pictures/{value}.jpg" alt={label} />
+							<Avatar.Fallback>{value}</Avatar.Fallback>
+						</Avatar.Root>
+						{label}
+					</Button>
+				{/each}
 			</div>
 
-			<div class="space-y-1.5">
-				<Label>Tema sučelja</Label>
-				<br />
-				<DropdownMenu.Root>
-					<DropdownMenu.Trigger asChild let:builder>
-						<Button class="justify-start w-full h-16 py-0" variant="outline" builders={[builder]}>
-							<div class="rounded-full mr-3 size-8 {themeColorOptions.find(({ value }) => value === formData.themeColor)?.twClass}"></div>
-							{themeColorOptions.find(({ value }) => value === formData.themeColor)?.label}
-						</Button>
-					</DropdownMenu.Trigger>
-					<DropdownMenu.Content class="w-56">
-						<DropdownMenu.Label>Slika profila</DropdownMenu.Label>
-						<DropdownMenu.Separator />
-						<DropdownMenu.RadioGroup bind:value={formData.themeColor}>
-							{#each themeColorOptions as { label, value, twClass }}
-								<DropdownMenu.RadioItem {value}>
-									<div class="mr-2 rounded-full size-8 {twClass}"></div>
-									{label}
-								</DropdownMenu.RadioItem>
+			<Label>Nema čeg nema</Label>
+			<div class="flex flex-wrap gap-1">
+				{#each avatarOptions.filter(({ value }) => value.startsWith('ext')) as { label, value }}
+					<Button class="justify-start h-12 px-2 w-36 {formData?.avatar === value && 'border-2 border-primary'}" on:click={() => (formData.avatar = value)} variant="outline">
+						<Avatar.Root class="mr-2 size-8">
+							<Avatar.Image src="/profile-pictures/{value}.jpg" alt={label} />
+							<Avatar.Fallback>{value}</Avatar.Fallback>
+						</Avatar.Root>
+						{label}
+					</Button>
+				{/each}
 
-								{#if value === 'default'}
-									<DropdownMenu.Separator />
-								{/if}
-							{/each}
-						</DropdownMenu.RadioGroup>
-					</DropdownMenu.Content>
-				</DropdownMenu.Root>
-
-				<input type="hidden" name="theme-color" value={formData?.themeColor} />
+				<Button class="justify-start h-12 px-2 w-36 {!formData?.avatar && 'border-2 border-primary'}" on:click={() => (formData.avatar = null)} variant="outline">
+					<div class="flex items-center justify-center mr-2 rounded-full size-8 bg-slate-600 text-slate-300">
+						{formData?.firstName?.charAt(0) ?? ''}{formData?.lastName?.charAt(0) ?? ''}
+					</div>
+					I'm boring
+				</Button>
 			</div>
 		</Card.Content>
 	</Card.Root>
 
-	<Button type="submit" disabled={!formValid}>Spremi</Button>
+	<Card.Root class="w-full">
+		<Card.Header class="border-b border-b-primary-accent">
+			<Card.Title>Tema sučelja</Card.Title>
+			<Card.Description>Ima struje/nema struje?</Card.Description>
+		</Card.Header>
+		<Card.Content class="p-6 space-y-4">
+			<div class="space-y-1.5">
+				<Button class=" h-16 w-full justify-start {formData.themeMode === 'system' && 'border-2 border-primary'}" variant="outline" on:click={() => (formData.themeMode = 'system')}>
+					<SunMoon class="mr-2 opacity-75 size-8" />
+					Kak šef odluči, tak bu (system)
+				</Button>
+				<Button class=" h-16 w-full justify-start {formData.themeMode === 'light' && 'border-2 border-primary'}" variant="outline" on:click={() => (formData.themeMode = 'light')}>
+					<Sun class="mr-2 opacity-75 size-8" />
+					Vužgaj nek se troši
+				</Button>
+				<Button class=" h-16 w-full justify-start {formData.themeMode === 'dark' && 'border-2 border-primary'}" variant="outline" on:click={() => (formData.themeMode = 'dark')}>
+					<Moon class="mr-2 opacity-75 size-8" />
+					Vampir mode
+				</Button>
+			</div>
+		</Card.Content>
+	</Card.Root>
+
+	<Card.Root class="w-full">
+		<Card.Header class="border-b border-b-primary-accent">
+			<Card.Title>Boja sučelja</Card.Title>
+			<Card.Description>Not sponsored by Jupol</Card.Description>
+		</Card.Header>
+		<Card.Content class="p-6 space-y-4">
+			<div class="space-y-1.5">
+				<Label>Život ti je siv?</Label>
+				<div class="flex flex-wrap w-full gap-1 pb-3">
+					{#each themeNeutralOptions as { label, value, twClass }}
+						<Button class={formData.themeColor === value && 'border-2 border-primary'} variant="outline" on:click={() => (formData.themeColor = value)} size="sm">
+							<div class="mr-2 rounded-full size-5 {twClass}"></div>
+							{label}
+						</Button>
+					{/each}
+				</div>
+
+				<Label>... ili ipak nije?</Label>
+				<div class="flex flex-wrap w-full gap-1">
+					{#each themeColorOptions as { label, value, twClass }}
+						<Button class={formData.themeColor === value && 'border-2 border-primary'} variant="outline" on:click={() => (formData.themeColor = value)} size="sm">
+							<div class="mr-2 rounded-full size-5 {twClass}"></div>
+							{label}
+						</Button>
+					{/each}
+				</div>
+			</div>
+		</Card.Content>
+	</Card.Root>
+
+	<input type="hidden" name="theme-mode" value={formData?.themeMode} />
+	<input type="hidden" name="theme-border-radius" value={formData?.themeBorderRadius} />
+	<input type="hidden" name="theme-color" value={formData?.themeColor} />
+	<input type="hidden" name="avatar" value={formData?.avatar} />
+
+	<div class="justify-self-center md:col-span-2">
+		<Button size="lg" type="submit" disabled={!formValid}>Spremi</Button>
+	</div>
 </form>

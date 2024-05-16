@@ -9,6 +9,7 @@ export const actions = {
 		const lastName = formData.get('last-name');
 		const themeColor = formData.get('theme-color');
 		const themeMode = formData.get('theme-mode');
+		const themeBorderRadius = formData.get('theme-border-radius');
 
 		const { error } = await supabase.from('users').update({
 			avatar,
@@ -18,6 +19,7 @@ export const actions = {
 				...user.options,
 				themeColor: themeColor ?? 'default',
 				themeMode: themeMode ?? 'system',
+				themeBorderRadius: themeBorderRadius ?? '0.75',
 			},
 		}).eq('email', user.email);
 

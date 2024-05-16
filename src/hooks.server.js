@@ -101,8 +101,11 @@ const authGuard = async ({ event, resolve }) => {
 		darkClass = 'dark';
 	}
 
+	const radius = userData?.options?.themeBorderRadius ?? '0.75';
+	const radiusStyle = `style="--cl-radius: ${radius}rem"`;
+
 	return resolve(event, {
-		transformPageChunk: ({ html }) => html.replace('<html lang="en" class="size-full">', `<html lang="en" class="size-full ${darkClass}" cl-theme-mode="${themeMode}" ${colorTheme}>`)
+		transformPageChunk: ({ html }) => html.replace('<html lang="en" class="size-full">', `<html lang="en" class="size-full ${darkClass}" ${radiusStyle} cl-theme-mode="${themeMode}" ${colorTheme}>`)
 	});
 }
 
