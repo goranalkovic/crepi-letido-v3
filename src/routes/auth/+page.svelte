@@ -23,7 +23,7 @@
 			<form method="POST" action="?/login" class="flex flex-col items-end gap-4">
 				<div class="flex w-full max-w-sm flex-col gap-1.5">
 					<Label for="email">Email</Label>
-					<Input type="email" id="email" name="email" placeholder="email" bind:value={emailValue} />
+					<Input type="email" id="email" name="email" placeholder="crep.crepanovic@letido.mdj" bind:value={emailValue} />
 				</div>
 
 				<div class="flex items-center w-full gap-4">

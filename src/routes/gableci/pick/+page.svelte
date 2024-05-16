@@ -5,6 +5,8 @@
 	import Phone from 'lucide-svelte/icons/phone';
 	import Truck from 'lucide-svelte/icons/truck';
 	import BookMarked from 'lucide-svelte/icons/book-marked';
+	import ShieldAlert from 'lucide-svelte/icons/shield-alert';
+	import ShieldX from 'lucide-svelte/icons/shield-x';
 
 	import { Button } from '$lib/components/ui/button';
 	import * as Card from '$lib/components/ui/card';
@@ -75,8 +77,6 @@
 	</Alert.Root>
 {/if}
 
-<h2 class="pb-2 text-3xl font-semibold tracking-tight transition-colors border-b first:mt-0">Dnevni izbor</h2>
-
 {#snippet gablecDisplay({ meals, restaurant: { name, phone, slug, url, delivery, urlType } })}
 	<div class="flex gap-8 pb-4">
 		<Card.Root class="sticky self-start min-w-96 top-8">
@@ -144,11 +144,35 @@
 	</div>
 {/snippet}
 
+{#if restaurants?.length < 1 && customRestaurants?.length < 1}
+	<Card.Root class="w-full max-w-md m-auto text-center">
+		<Card.Header class="py-10">
+			<ShieldX class="mx-auto text-destructive size-16 " />
+			<Card.Title class="text-2xl md:text-3xl">Nekaj gadno ne štima</Card.Title>
+			<Card.Description class="text-lg">Nijenog restorana nema?!</Card.Description>
+		</Card.Header>
+	</Card.Root>
+{/if}
+
+{#if restaurants?.length > 0}
+	 <h2 class="pb-2 text-3xl font-semibold tracking-tight transition-colors border-b first:mt-0">Dnevni izbor</h2>
+{:else}
+	<Card.Root class="w-full max-w-md m-auto text-center">
+		<Card.Header class="py-10">
+			<ShieldAlert class="mx-auto text-slate-400 size-16 dark:text-slate-600" />
+			<Card.Title class="text-2xl md:text-3xl">Nekaj ne štima</Card.Title>
+			<Card.Description class="text-base">Glavnih restorana nema. Možda je presušil source? Možda je crkel cron za update? Pitaj Goca.</Card.Description>
+		</Card.Header>
+	</Card.Root>
+{/if}
+
 {#each restaurants as restaurant (restaurant.id)}
 	{@render gablecDisplay(restaurant)}
 {/each}
 
-<h2 class="pb-2 text-3xl font-semibold tracking-tight transition-colors border-b first:mt-0">Stalna postava</h2>
+{#if customRestaurants?.length > 0}
+	<h2 class="pb-2 text-3xl font-semibold tracking-tight transition-colors border-b first:mt-0">Stalna postava</h2>
+{/if}
 
 {#each customRestaurants as restaurant (restaurant.id)}
 	{@render gablecDisplay(restaurant)}

@@ -6,6 +6,8 @@
 	import Truck from 'lucide-svelte/icons/truck';
 	import BookMarked from 'lucide-svelte/icons/book-marked';
 	import Handshake from 'lucide-svelte/icons/handshake';
+	import CloudRainWind from 'lucide-svelte/icons/cloud-rain-wind';
+	import Sticker from 'lucide-svelte/icons/sticker';
 
 	import { slide, scale, blur } from 'svelte/transition';
 	import { flip } from 'svelte/animate';
@@ -15,6 +17,7 @@
 	import * as Avatar from '$lib/components/ui/avatar';
 	import * as Tooltip from '$lib/components/ui/tooltip';
 	import * as Alert from '$lib/components/ui/alert';
+	import { Separator } from '$lib/components/ui/separator';
 
 	let { data } = $props();
 	let { supabase, possibleSelections, hasError, displayedRestaurants } = $derived(data);
@@ -46,6 +49,23 @@
 		<Alert.Title>Nekaj se zblesiralo.</Alert.Title>
 		<Alert.Description>Bude bolje zutra.</Alert.Description>
 	</Alert.Root>
+{/if}
+
+{#if displayedRestaurants?.length < 1}
+	<Card.Root class="w-full max-w-md m-auto text-center">
+		<Card.Header class="py-10">
+			<CloudRainWind class="mx-auto text-slate-400 size-16 dark:text-slate-600" />
+			<Card.Title class="text-2xl md:text-3xl">Črepi nisu sletili... još</Card.Title>
+			<Card.Description class="text-lg">Valjda bu netko nekaj izabral</Card.Description>
+		</Card.Header>
+		<Separator />
+		<Card.Content class="p-6">
+			<Button href='/gableci/pick'>
+				<Sticker class="mr-2 size-5" />
+				Kaj se čeka?
+			</Button>
+		</Card.Content>
+	</Card.Root>
 {/if}
 
 {#each displayedRestaurants as { id, meals, restaurant: { name, phone, slug, url, delivery, urlType }, statistics: { totalMealsOrdered, hasIntersect } } (id)}
