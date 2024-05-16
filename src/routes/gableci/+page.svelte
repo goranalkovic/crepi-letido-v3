@@ -79,7 +79,6 @@
 				<Card.Title class="flex items-center gap-2 mb-3">
 					<img class="size-6" src="/restaurant-icons/{slug}.png" alt={name} />
 					{name}
-					{totalMealsOrdered}
 				</Card.Title>
 				{#if phone}
 					<Card.Description class="flex items-center gap-3">
