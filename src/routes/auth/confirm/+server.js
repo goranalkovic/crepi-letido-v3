@@ -3,7 +3,7 @@ import { redirect } from '@sveltejs/kit'
 
 export const GET = async ({ url, locals: { supabase } }) => {
 	const token_hash = url.searchParams.get('token_hash')
-	const type = url.searchParams.get('type') | null
+	const type = 'email'; // url.searchParams.get('type') | 'email'
 	const next = url.searchParams.get('next') ?? '/'
 
 	/**
