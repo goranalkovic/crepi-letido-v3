@@ -50,7 +50,6 @@ export const load = async ({ depends, locals: { supabase, user } }) => {
 		});
 	});
 
-
 	const userStatisticsData = existingData
 		.filter(({ selected }) => Object.keys(selected)?.length > 0)
 		.map((i) => ({ mail: i.user.email, selections: i.selected }))
@@ -69,8 +68,6 @@ export const load = async ({ depends, locals: { supabase, user } }) => {
 				totalMealsOrdered: Object.values(i.numMealsOrdered).reduce((prev, curr) => prev + parseInt(curr), 0),
 			}
 		});
-
-	// console.log(userStatisticsData)
 
 	let displayedRestaurants = [...restaurantData, ...customRestaurantData].filter(Boolean)
 		.filter(({ restaurant: { slug } }) => chosenRestaurants.includes(slug))
@@ -96,32 +93,6 @@ export const load = async ({ depends, locals: { supabase, user } }) => {
 
 			return b.statistics.totalMealsOrdered - a.statistics.totalMealsOrdered;
 		})
-	// .toSorted((a, b) => {
-	// 	// console.log({a, b});
-
-	// 	const aSum = ;
-
-	// 	const bSum = userStatisticsData.reduce((prev, curr) => {
-	// 		const numForThisRestaurant = parseInt(curr.numMealsOrdered[b.restaurant.slug]);
-
-	// 		if (isNaN(numForThisRestaurant)) {
-	// 			return prev;
-	// 		}
-
-	// 		return prev + numForThisRestaurant;
-	// 	}, 0);
-
-
-	// 	console.log({aSum, bSum});
-
-	// 	if (aSum === bSum) {
-	// 		return 0;
-	// 	}
-
-	// 	return aSum > bSum;
-	// });
-
-	console.log('displ', displayedRestaurants);
 
 	return {
 		restaurants: restaurantData ?? [],
