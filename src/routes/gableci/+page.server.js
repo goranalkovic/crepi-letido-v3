@@ -36,7 +36,7 @@ export const load = async ({ depends, locals: { supabase, user } }) => {
 	let chosenRestaurants = [];
 
 	// const usersWithoutSelections = existingData.filter(({ selected }) => Object.keys(selected)?.length < 1);
-	// const usersWithSelections = existingData.filter(({ selected }) => Object.keys(selected)?.length > 0);
+	const usersWithSelections = existingData.filter(({ selected }) => Object.keys(selected)?.length > 0);
 
 	existingData.forEach(({ selected, user }) => {
 		Object.entries(selected).forEach(([slug, meals]) => {
@@ -102,6 +102,7 @@ export const load = async ({ depends, locals: { supabase, user } }) => {
 		possibleSelections,
 		chosenRestaurants,
 		displayedRestaurants,
+		numPeoplePicked: usersWithSelections?.length ?? 0,
 		hasError: err1 || err2 || err3 || err4,
 	};
 };
