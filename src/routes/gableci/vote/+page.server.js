@@ -151,8 +151,6 @@ export const load = async ({ depends, locals: { supabase, user } }) => {
 		};
 	});
 
-	console.log(sortedAllThatFinalizedStep2);
-
 	return {
 		restaurants: restaurantData ?? [],
 		customRestaurants: customRestaurantData ?? [],

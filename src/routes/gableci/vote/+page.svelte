@@ -52,17 +52,19 @@
 
 	let selectedFinalMeal = $state();
 
-	const handleFinalize2 = async () => {
+	const handleFinalize2 = async (revert = false) => {
 		const currentDate = getCurrentDate();
 
 		await supabase
 			.from('meal-selections')
 			.update({
-				finalVote: selectedFinalMeal,
+				finalVote: revert ? null : selectedFinalMeal,
 			})
 			.eq('user', user.email)
 			.gte('created', `${currentDate} 00:00:00`)
 			.lte('created', `${currentDate} 23:59:59`);
+
+			await invalidateAll();
 	};
 
 	$effect(() => {
@@ -167,6 +169,7 @@
 		</Card.Header>
 	</Card.Root>
 
+
 	<div class="grid w-full max-w-screen-lg grid-cols-3 mx-auto text-lg font-bold">
 		<p>Korisnik</p>
 		<p>Restoran</p>
@@ -196,6 +199,9 @@
 			</div>
 		</div>
 	{/each}
+
+	<Button variant="link" on:click={() => handleFinalize2(true)} class="p-0 text-xs font-normal tracking-wide select-none opacity-5 hover:opacity-10 transiton">Otključaj</Button>
+
 {/if}
 
 {#if !currentUserHasFinalized2 && selectedFinalMeal}
