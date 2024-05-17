@@ -26,9 +26,12 @@
 					timeout = 3000;
 				}
 
-				setTimeout(() => {
-					goto('/', { invalidateAll: true });
-				}, timeout);
+				const pageStatus = parseInt($page.status);
+				if (pageStatus >= 200 && pageStatus < 300) {
+					setTimeout(() => {
+						goto('/', { invalidateAll: true });
+					}, timeout);
+				}
 			}
 			if (newSession?.expires_at !== session?.expires_at) {
 				invalidate('supabase:auth');
