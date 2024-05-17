@@ -12,7 +12,7 @@
 </svelte:head>
 
 <div class="flex flex-col items-center gap-2 m-auto">
-	<h1 class="flex items-center mb-8 text-4xl font-extrabold tracking-tight lg:text-5xl">
+	<h1 class="flex items-center mb-8 text-4xl font-bold tracking-tight lg:text-5xl">
 		<ChefHat class="mr-2 text-primary size-12 " />
 		Črepi letido
 	</h1>
