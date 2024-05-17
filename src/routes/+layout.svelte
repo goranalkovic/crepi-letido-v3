@@ -2,7 +2,7 @@
 // @ts-nocheck
 	import '../app.css';
 
-	import { goto, invalidate } from '$app/navigation';
+	import { goto, invalidate, onNavigate } from '$app/navigation';
 	import { page } from '$app/stores';
 	import PageTitle from '$lib/PageTitle.svelte';
 	import SideRail from '$lib/SideRail.svelte';
@@ -12,6 +12,17 @@
 	let { session, supabase, userData } = $derived(data);
 
 	let currentRoute = $derived($page.url.pathname);
+
+	onNavigate((navigation) => {
+		if (!document.startViewTransition) return;
+
+		return new Promise((resolve) => {
+			document.startViewTransition(async () => {
+				resolve();
+				await navigation.complete;
+			});
+		});
+	});
 
 	$effect.pre(() => {
 		const { data } = supabase.auth.onAuthStateChange((_, newSession) => {
@@ -27,7 +38,7 @@
 				}
 
 				const pageStatus = parseInt($page.status ?? '200');
-				
+
 				if (pageStatus >= 200 && pageStatus < 300) {
 					setTimeout(() => {
 						goto('/', { invalidateAll: true });

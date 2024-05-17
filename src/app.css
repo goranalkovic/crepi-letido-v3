@@ -598,3 +598,50 @@
 		@apply bg-background text-foreground;
 	}
 }
+
+/* VIEW TRANSITIONS */
+
+/* Disable for whole app */
+:root {
+	view-transition-name: none;
+}
+
+/* Enable just for main */
+main {
+	view-transition-name: main;
+}
+
+@keyframes fade-in {
+	from {
+		opacity: 0;
+	}
+}
+
+@keyframes fade-out {
+	to {
+		opacity: 0;
+	}
+}
+
+@keyframes slide-from-right {
+	from {
+		translate: 0 -4rem;
+		scale: 0.95;
+	}
+}
+
+@keyframes slide-to-left {
+	to {
+		translate: 0 4rem;
+		scale: 0.95;
+	}
+}
+
+:root::view-transition-old(main) {
+	animation: 90ms cubic-bezier(0.4, 0, 1, 1) both fade-out, 300ms cubic-bezier(0.4, 0, 0.2, 1) both slide-to-left;
+}
+
+:root::view-transition-new(main) {
+	animation: 210ms cubic-bezier(0, 0, 0.2, 1) 90ms both fade-in, 300ms cubic-bezier(0.4, 0, 0.2, 1) both
+			slide-from-right;
+}
