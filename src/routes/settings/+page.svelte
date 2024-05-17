@@ -144,7 +144,10 @@
 					<div class="flex items-center justify-center mr-2 rounded-full size-8 bg-slate-600 text-slate-300">
 						{formData?.firstName?.charAt(0) ?? ''}{formData?.lastName?.charAt(0) ?? ''}
 					</div>
-					I'm boring
+					<div class="flex flex-col items-start leading-none">
+						I'm boring
+						<span class="text-xs text-muted-foreground">Ništa</span>
+					</div>
 				</Button>
 			</div>
 		</Card.Content>
