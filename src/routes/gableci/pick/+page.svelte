@@ -214,3 +214,20 @@
 		</Card.Footer>
 	</Card.Root>
 {/if}
+
+{#if Object.keys(userSelections ?? {})?.length > 0}
+	<div transition:scale={{ start: 0.85 }} class="fixed z-20 w-80 right-10 bottom-10">
+		<Card.Root class="shadow-lg">
+			<Card.Header>
+				<Card.Title class="inline-flex items-center gap-2">
+					<PartyPopper class="stroke-[1.5] size-7" />
+					It's a start!
+				</Card.Title>
+				<Card.Description class="text-balance">Ako je to sve, možemo na <strong>overview</strong> da vidimo kak su drugi birali!</Card.Description>
+			</Card.Header>
+			<Card.Content>
+				<Button>Aaaaajmo!</Button>
+			</Card.Content>
+		</Card.Root>
+	</div>
+{/if}
