@@ -1,10 +1,6 @@
 <script>
 	// @ts-nocheck
-	import { goto, invalidateAll } from '$app/navigation';
 	import Vegan from 'lucide-svelte/icons/vegan';
-	import Phone from 'lucide-svelte/icons/phone';
-	import Truck from 'lucide-svelte/icons/truck';
-	import BookMarked from 'lucide-svelte/icons/book-marked';
 	import Handshake from 'lucide-svelte/icons/handshake';
 	import CloudRainWind from 'lucide-svelte/icons/cloud-rain-wind';
 	import Sticker from 'lucide-svelte/icons/sticker';
@@ -14,17 +10,18 @@
 
 	import { getCurrentDate } from '$lib/current-date.js';
 
+	import { goto, invalidateAll } from '$app/navigation';
 	import { slide, scale } from 'svelte/transition';
 	import { flip } from 'svelte/animate';
 
 	import { Button } from '$lib/components/ui/button';
 	import * as Card from '$lib/components/ui/card';
-	import * as Avatar from '$lib/components/ui/avatar';
-	import * as Tooltip from '$lib/components/ui/tooltip';
 	import * as Alert from '$lib/components/ui/alert';
 	import { Separator } from '$lib/components/ui/separator';
 	import * as HoverCard from '$lib/components/ui/hover-card';
 	import * as Popover from '$lib/components/ui/popover';
+	import RestaurantCard from '$lib/RestaurantCard.svelte';
+	import UserAvatar from '$lib/UserAvatar.svelte';
 
 	let { data } = $props();
 	let { supabase, possibleSelections, hasError, displayedRestaurants, numPeoplePicked, user, finalize1DoneUsers, currentUserHasFinalized1 } = $derived(data);
@@ -57,8 +54,8 @@
 			.eq('user', user.email)
 			.gte('created', `${currentDate} 00:00:00`)
 			.lte('created', `${currentDate} 23:59:59`);
-			
-			await invalidateAll();
+
+		await invalidateAll();
 
 		if (!unlock) {
 			await goto('/gableci/vote');
@@ -99,75 +96,29 @@
 {/if}
 
 {#if !currentUserHasFinalized1}
-	{#each displayedRestaurants as { id, meals, restaurant: { name, phone, slug, url, delivery, urlType }, statistics: { intersectBreakers, hasIntersect } } (id)}
+	{#each displayedRestaurants as { id, meals, restaurant, restaurant: { slug }, statistics: { intersectBreakers, hasIntersect } } (id)}
 		<div class="flex gap-8 pb-8 border-b last:border-b-0" transition:scale={{ start: 0.95 }} animate:flip={{ duration: 500 }}>
-			<Card.Root class="sticky self-start min-w-96 top-8">
-				<Card.Header>
-					<Card.Title class="flex items-center gap-2 mb-3">
-						<img class="size-6" src="/restaurant-icons/{slug}.png" alt={name} />
-						{name}
-					</Card.Title>
-					{#if phone}
-						<Card.Description class="flex items-center gap-3">
-							<Phone class="size-5 accent-current" />
-							{phone}
-						</Card.Description>
-					{/if}
-					{#if delivery}
-						<Card.Description class="flex items-center gap-3">
-							<Truck class="size-5 accent-current" />
-							{delivery}
-						</Card.Description>
-					{/if}
-
-					{#if url}
-						<Card.Description class="flex items-center gap-3 pt-3">
-							<BookMarked class="size-5 accent-current" />
-
-							<Button variant="link" class="h-auto p-0" href={url} target="_blank">
-								{#if urlType === 'additional'}
-									Dodatna ponuda
-								{:else}
-									Meni
-								{/if}
-							</Button>
-						</Card.Description>
-					{/if}
-				</Card.Header>
-			</Card.Root>
+			<RestaurantCard {...restaurant} className="sticky self-start top-8" />
 
 			<div class="space-y-1.5 w-full max-w-lg p-1 rounded-lg">
 				{#each meals as { name, price, meta }, i (i)}
 					{#if possibleSelections[slug][i].selected.length > 0}
 						<div transition:slide class="flex items-center w-full p-2 space-x-3 transition duration-700 rounded-lg">
 							<div class="space-y-1.5 w-full text-sm font-medium leading-none mx-w-lg">
-								<p>
+								<span>
 									{name}
 									{#if meta?.isVegetarian}
 										<Vegan class="inline-block ml-1 size-4 text-lime-600 dark:text-lime-600" />
 									{/if}
-								</p>
+								</span>
 								{#if price}
-									<p class="text-muted-foreground">{price}</p>
+									<span class="text-muted-foreground">{price}</span>
 								{/if}
 							</div>
 							<div class="flex -space-x-4 hover:space-x-1">
 								{#each possibleSelections[slug][i].selected as currentUser (currentUser.email)}
 									<div animate:flip transition:scale class="transition-[margin] leading-[0]">
-										<Tooltip.Root>
-											<Tooltip.Trigger>
-												<Avatar.Root class="border-2 size-9 border-secondary dark:border-background bg-background">
-													<Avatar.Image src="/profile-pictures/{currentUser.avatar}.jpg" alt="{currentUser.firstName ?? ''} {currentUser.lastName ?? ''}" />
-													<Avatar.Fallback>{currentUser.firstName?.charAt(0) ?? '-'}{currentUser.lastName?.charAt(0) ?? '-'}</Avatar.Fallback>
-												</Avatar.Root>
-											</Tooltip.Trigger>
-											<Tooltip.Content>
-												<p>
-													{currentUser?.firstName}
-													{currentUser?.lastName}
-												</p>
-											</Tooltip.Content>
-										</Tooltip.Root>
+										<UserAvatar {...currentUser} />
 									</div>
 								{/each}
 							</div>
@@ -194,10 +145,7 @@
 							<h3 class="mb-3 text-xl font-semibold tracking-tight">Intersect breakers</h3>
 							{#each intersectBreakers as { avatar, firstName, lastName }}
 								<div class="flex items-center gap-2">
-									<Avatar.Root class="hidden size-8 sm:flex">
-										<Avatar.Image src="/profile-pictures/{avatar}.jpg" alt="{firstName} {lastName}" />
-										<Avatar.Fallback>{firstName?.charAt(0) ?? '-'}{lastName?.charAt(0) ?? '-'}</Avatar.Fallback>
-									</Avatar.Root>
+									<UserAvatar {avatar} {firstName} {lastName} />
 									<div class="grid gap-1">
 										<p class="text-sm font-medium leading-none">{firstName} {lastName}</p>
 									</div>

@@ -18,6 +18,7 @@
 	import { Checkbox } from '$lib/components/ui/checkbox';
 	import { debounce } from '$lib/debounce.js';
 	import { getCurrentDate } from '$lib/current-date.js';
+	import RestaurantCard from '$lib/RestaurantCard.svelte';
 
 	let { data } = $props();
 	let { supabase, restaurants, customRestaurants, hasError, user, userSelections: rawUserSelections, currentUserHasFinalized1 } = $derived(data);
@@ -73,7 +74,7 @@
 			.gte('created', `${currentDate} 00:00:00`)
 			.lte('created', `${currentDate} 23:59:59`);
 
-			await invalidateAll();
+		await invalidateAll();
 	};
 
 	$effect(() => {
@@ -99,75 +100,8 @@
 	</Alert.Root>
 {/if}
 
-{#snippet gablecDisplay({ meals, restaurant: { name, phone, slug, url, delivery, urlType } })}
-	<div class="flex gap-8 pb-4">
-		<Card.Root class="sticky self-start min-w-96 top-8">
-			<Card.Header>
-				<Card.Title class="flex items-center gap-2 mb-3">
-					<img class="size-6" src="/restaurant-icons/{slug}.png" alt={name} />
-					{name}
-				</Card.Title>
-				{#if phone}
-					<Card.Description class="flex items-center gap-3">
-						<Phone class="size-5 accent-current" />
-						{phone}
-					</Card.Description>
-				{/if}
-				{#if delivery}
-					<Card.Description class="flex items-center gap-3">
-						<Truck class="size-5 accent-current" />
-						{delivery}
-					</Card.Description>
-				{/if}
-
-				{#if url}
-					<Card.Description class="flex items-center gap-3 pt-3">
-						<BookMarked class="size-5 accent-current" />
-
-						<Button variant="link" class="h-auto p-0" href={url} target="_blank">
-							{#if urlType === 'additional'}
-								Dodatna ponuda
-							{:else}
-								Meni
-							{/if}
-						</Button>
-					</Card.Description>
-				{/if}
-			</Card.Header>
-		</Card.Root>
-
-		<div class="space-y-0.5 w-full max-w-lg">
-			{#each meals as { name, price, meta }, i (i)}
-				<div class="flex items-center w-full p-3 space-x-3 transition duration-700 rounded-lg hover:bg-card">
-					<Checkbox
-						id="meal-{slug}-{i}"
-						aria-labelledby="meal-{slug}-{i}-label"
-						checked={userSelections?.[slug]?.[i]?.selected}
-						onCheckedChange={(value) => {
-							userSelections[slug][i].selected = value;
-
-							handleChange();
-						}}
-					/>
-					<Label id="meal-{slug}-{i}-label" for="meal-{slug}-{i}" class="space-y-1.5 w-full text-sm font-medium leading-none cursor-pointer peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-						<p>
-							{name}
-							{#if meta?.isVegetarian}
-								<Vegan class="inline-block ml-1 size-4 text-lime-600 dark:text-lime-600" />
-							{/if}
-						</p>
-						{#if price}
-							<p class="text-muted-foreground">{price}</p>
-						{/if}
-					</Label>
-				</div>
-			{/each}
-		</div>
-	</div>
-{/snippet}
-
 {#if !currentUserHasFinalized1}
-	 {#if restaurants?.length < 1 && customRestaurants?.length < 1}
+	{#if restaurants?.length < 1 && customRestaurants?.length < 1}
 		<Card.Root class="w-full max-w-md m-auto text-center">
 			<Card.Header class="py-10">
 				<ShieldX class="mx-auto text-destructive size-16 " />
@@ -189,26 +123,91 @@
 		</Card.Root>
 	{/if}
 
-	{#each restaurants as restaurant (restaurant.id)}
-		{@render gablecDisplay(restaurant)}
+	{#each restaurants as { meals, restaurant, restaurant: { slug } } (restaurant.id)}
+		<div class="flex gap-8 pb-4">
+			<RestaurantCard {...restaurant} className="sticky self-start top-8" />
+
+			<div class="space-y-0.5 w-full max-w-lg">
+				{#each meals as { name, price, meta }, i (i)}
+					<div class="flex items-center w-full p-3 space-x-3 transition duration-700 rounded-lg hover:bg-card">
+						<Checkbox
+							id="meal-{slug}-{i}"
+							aria-labelledby="meal-{slug}-{i}-label"
+							checked={userSelections?.[slug]?.[i]?.selected}
+							onCheckedChange={(value) => {
+								userSelections[slug][i].selected = value;
+
+								handleChange();
+							}}
+						/>
+						<Label
+							id="meal-{slug}-{i}-label"
+							for="meal-{slug}-{i}"
+							class="space-y-1.5 w-full text-sm font-medium leading-none cursor-pointer peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+						>
+							<p>
+								{name}
+								{#if meta?.isVegetarian}
+									<Vegan class="inline-block ml-1 size-4 text-lime-600 dark:text-lime-600" />
+								{/if}
+							</p>
+							{#if price}
+								<p class="text-muted-foreground">{price}</p>
+							{/if}
+						</Label>
+					</div>
+				{/each}
+			</div>
+		</div>
 	{/each}
 
 	{#if customRestaurants?.length > 0}
 		<h2 class="pb-2 text-3xl font-semibold tracking-tight transition-colors border-b first:mt-0">Stalna postava</h2>
 	{/if}
 
-	{#each customRestaurants as restaurant (restaurant.id)}
-		{@render gablecDisplay(restaurant)}
+	{#each customRestaurants as { meals, restaurant, restaurant: { slug } } (restaurant.id)}
+		<div class="flex gap-8 pb-4">
+			<RestaurantCard {...restaurant} className="sticky self-start top-8" />
+
+			<div class="space-y-0.5 w-full max-w-lg">
+				{#each meals as { name, price, meta }, i (i)}
+					<div class="flex items-center w-full p-3 space-x-3 transition duration-700 rounded-lg hover:bg-card">
+						<Checkbox
+							id="meal-{slug}-{i}"
+							aria-labelledby="meal-{slug}-{i}-label"
+							checked={userSelections?.[slug]?.[i]?.selected}
+							onCheckedChange={(value) => {
+								userSelections[slug][i].selected = value;
+
+								handleChange();
+							}}
+						/>
+						<Label
+							id="meal-{slug}-{i}-label"
+							for="meal-{slug}-{i}"
+							class="space-y-1.5 w-full text-sm font-medium leading-none cursor-pointer peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+						>
+							<p>
+								{name}
+								{#if meta?.isVegetarian}
+									<Vegan class="inline-block ml-1 size-4 text-lime-600 dark:text-lime-600" />
+								{/if}
+							</p>
+							{#if price}
+								<p class="text-muted-foreground">{price}</p>
+							{/if}
+						</Label>
+					</div>
+				{/each}
+			</div>
+		</div>
 	{/each}
 {:else}
 	<Card.Root class="w-full max-w-md m-auto text-center">
 		<Card.Header class="py-10">
 			<RouteOff class="mx-auto text-destructive size-16 " />
 			<Card.Title class="text-2xl md:text-3xl">Nema više cile-mile</Card.Title>
-			<Card.Description class="text-lg">
-				Sve je finalizirano
-
-			</Card.Description>
+			<Card.Description class="text-lg">Sve je finalizirano</Card.Description>
 		</Card.Header>
 		<Card.Footer class="flex flex-col items-center">
 			<Button href="/gableci/vote">Idi na finalni izbor</Button>
@@ -228,7 +227,7 @@
 				<Card.Description class="text-balance">Ako je to sve, možemo na <strong>overview</strong> da vidimo kak su drugi birali!</Card.Description>
 			</Card.Header>
 			<Card.Content>
-				<Button href="/gableci">Aaaaajmo! <ArrowRight class="size-5 ml-2" /></Button>
+				<Button href="/gableci">Aaaaajmo! <ArrowRight class="ml-2 size-5" /></Button>
 			</Card.Content>
 		</Card.Root>
 	</div>
