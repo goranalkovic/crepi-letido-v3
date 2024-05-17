@@ -8,6 +8,7 @@
 	import ShieldAlert from 'lucide-svelte/icons/shield-alert';
 	import ShieldX from 'lucide-svelte/icons/shield-x';
 	import RouteOff from 'lucide-svelte/icons/route-off';
+	import PartyPopper from 'lucide-svelte/icons/party-popper';
 
 	import { Button } from '$lib/components/ui/button';
 	import * as Card from '$lib/components/ui/card';
