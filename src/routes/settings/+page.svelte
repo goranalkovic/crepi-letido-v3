@@ -34,8 +34,8 @@
 		{ value: 'ext4', label: 'Kamp' },
 		{ value: 'ext5', label: 'IksPe riba' },
 		{ value: 'ext6', label: 'IksPe kvakva' },
-		{ value: 'ext7', label: 'IksPe muzika' },
-		{ value: 'ext8', label: 'IksPe Hrca' },
+		{ value: 'ext7', label: 'IksPe Hrca' },
+		{ value: 'ext8', label: 'IksPe My10' },
 		{ value: 'ext9', label: 'IksPe Jurica' },
 		{ value: 'ext10', label: 'IksPe rafal' },
 	];
