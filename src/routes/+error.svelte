@@ -15,7 +15,6 @@
     <title>Jao, šta bi? ({$page.status}) | ČL</title>
 </svelte:head>
 
-<h1>{$page.status} {$page.error.message}</h1>
 <div class="flex flex-col items-center gap-2 m-auto">
 	<h1 class="flex items-center mb-8 text-4xl font-extrabold tracking-tight lg:text-5xl">
 		<ChefHat class="mr-2 text-primary size-12 " />
@@ -23,15 +22,15 @@
 	</h1>
 
 	<Card.Root class="max-w-md text-center">
-		<Card.Header class="py-10">
-			{#if $page.status === '404'}
+		<Card.Header class="pt-10 pb-8">
+			{#if $page.status === 404}
                 <TextSelect class="mx-auto text-primary size-16" />
             {:else}
                 <CandyOff class="mx-auto text-primary size-16" />
             {/if}
 			
             <Card.Title class="text-2xl md:text-3xl">
-                {#if $page.status === '404'}
+                {#if $page.status === 404}
                     Otkud ti ovaj link? Tu nema nič.
                 {:else}
                     Auf, nekaj je crklo
@@ -40,12 +39,12 @@
 			<Card.Description class="text-lg"><span class="font-mono">{$page.status}</span></Card.Description>
 		</Card.Header>
 		<Separator />
-		<Card.Content class="p-6 flex flex-col gap-6">
+		<Card.Content class="p-6 flex flex-col items-center gap-6 text-base">
 			A niš, probaj opet ili se javi Gocu, znal bu on kaj treba.
 
-            <Button href="/"><Home class="size-5 mr-2" /> Vrni me doma!</Button>
+            <Button href="/" size="lg"><Home class="size-5 mr-2" /> Vrni me doma!</Button>
 		</Card.Content>
 	</Card.Root>
 
-    <p class="text-xs text-muted-foreground">Greška: {$page.error.message}</p>
+    <p class="text-xs text-muted-foreground/50 mt-4">Greška: {$page.error.message}</p>
 </div>

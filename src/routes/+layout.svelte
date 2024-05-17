@@ -26,7 +26,8 @@
 					timeout = 3000;
 				}
 
-				const pageStatus = parseInt($page.status);
+				const pageStatus = parseInt($page.status ?? '200');
+				
 				if (pageStatus >= 200 && pageStatus < 300) {
 					setTimeout(() => {
 						goto('/', { invalidateAll: true });
