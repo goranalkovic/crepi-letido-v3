@@ -31,7 +31,7 @@
 			
             <Card.Title class="text-2xl md:text-3xl">
                 {#if $page.status === 404}
-                    Otkud ti ovaj link? Tu nema nič.
+                    Otkud ti ovaj link?<br/>Tu nema nič.
                 {:else}
                     Auf, nekaj je crklo
                 {/if}
@@ -40,11 +40,13 @@
 		</Card.Header>
 		<Separator />
 		<Card.Content class="p-6 flex flex-col items-center gap-6 text-base">
-			A niš, probaj opet ili se javi Gocu, znal bu on kaj treba.
+			{#if $page.status !== 404}
+                A niš, probaj opet ili se javi Gocu, znal bu on kaj treba.
+            {/if}
 
-            <Button href="/" size="lg"><Home class="size-5 mr-2" /> Vrni me doma!</Button>
+            <Button href="/" size="lg"><Home class="size-5 mr-2" /> Vrni me doma</Button>
 		</Card.Content>
 	</Card.Root>
 
-    <p class="text-xs text-muted-foreground/50 mt-4">Greška: {$page.error.message}</p>
+    <p class="text-xs text-muted-foreground/25 mt-4">Greška: {$page.error.message}</p>
 </div>
