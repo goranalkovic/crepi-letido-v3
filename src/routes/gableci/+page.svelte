@@ -59,7 +59,7 @@
 			.lte('created', `${currentDate} 23:59:59`);
 
 		if (!unlock) {
-			goto('/gableci/vote');
+			await goto('/gableci/vote');
 		}
 	};
 
@@ -180,7 +180,7 @@
 						<Handshake class="size-6 text-primary " />
 						Intersect
 					</div>
-				{:else}
+				{:else if numPeoplePicked > 1}
 					<HoverCard.Root>
 						<HoverCard.Trigger>
 							<div class="inline-flex items-center gap-1 transition text-accent-foreground/50 hover:text-primary">
