@@ -18,10 +18,15 @@
 <div class="flex flex-col items-center gap-2 m-auto">
 	<h1 class="flex items-center mb-8 text-4xl font-extrabold tracking-tight lg:text-5xl">
 		<ChefHat class="mr-2 text-primary size-12 " />
-		Črepi (ne) letido (?)
+		
+        {#if $page.status === 404}
+            Črepi letido
+        {:else}
+            Črepi... ne letido?
+        {/if}
 	</h1>
 
-	<Card.Root class="max-w-md text-center">
+	<Card.Root class="w-full max-w-md text-center">
 		<Card.Header class="pt-10 pb-8">
 			{#if $page.status === 404}
                 <TextSelect class="mx-auto text-primary size-16" />
