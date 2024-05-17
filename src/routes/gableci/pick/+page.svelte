@@ -8,7 +8,7 @@
 	import ShieldAlert from 'lucide-svelte/icons/shield-alert';
 	import ShieldX from 'lucide-svelte/icons/shield-x';
 	import RouteOff from 'lucide-svelte/icons/route-off';
-	import PartyPopper from 'lucide-svelte/icons/party-popper';
+	import ArrowRight from 'lucide-svelte/icons/arrow-right';
 
 	import { Button } from '$lib/components/ui/button';
 	import * as Card from '$lib/components/ui/card';
@@ -221,13 +221,13 @@
 		<Card.Root class="shadow-lg">
 			<Card.Header>
 				<Card.Title class="inline-flex items-center gap-2">
-					<PartyPopper class="stroke-[1.5] size-7" />
+					<Medal class="stroke-[1.5] size-7" />
 					It's a start!
 				</Card.Title>
 				<Card.Description class="text-balance">Ako je to sve, možemo na <strong>overview</strong> da vidimo kak su drugi birali!</Card.Description>
 			</Card.Header>
 			<Card.Content>
-				<Button>Aaaaajmo!</Button>
+				<Button href="/gableci">Aaaaajmo! <ArrowRight class="size-5 ml-2" /></Button>
 			</Card.Content>
 		</Card.Root>
 	</div>
