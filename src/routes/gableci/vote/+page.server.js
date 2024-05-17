@@ -124,7 +124,7 @@ export const load = async ({ depends, locals: { supabase, user } }) => {
 		.gte('created', `${currentDate} 00:00:00`)
 		.lte('created', `${currentDate} 23:59:59`);
 
-	const sortedAllThatFinalizedStep2 = allThatFinalizedStep2.toSorted((a, b) => {
+	const sortedAllThatFinalizedStep2 = allThatFinalizedStep2?.toSorted((a, b) => {
 		if (a.user === user.email) {
 			return 1;
 		}

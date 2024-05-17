@@ -73,13 +73,30 @@
 </script>
 
 <svelte:head>
-	<title>Gablec overview | ČL</title>
+	<title>Final voting | ČL</title>
 </svelte:head>
 
 <Alert.Root class="max-w-sm">
 	<Alert.Title>Halo, halo, stani malo</Alert.Title>
 	<Alert.Description>Još nisam ful siguran kak ovo želim složiti, stvari se možda promijene u budućnosti.</Alert.Description>
 </Alert.Root>
+
+{#if displayedRestaurants?.length < 1}
+	<Card.Root class="w-full max-w-md m-auto text-center">
+		<Card.Header class="py-10">
+			<CloudRainWind class="mx-auto text-slate-400 size-16 dark:text-slate-600" />
+			<Card.Title class="text-2xl md:text-3xl">Črepi nisu sletili... još</Card.Title>
+			<Card.Description class="text-lg">Valjda bu netko nekaj izabral</Card.Description>
+		</Card.Header>
+		<Separator />
+		<Card.Content class="p-6">
+			<Button href="/gableci/pick">
+				<Sticker class="mr-2 size-5" />
+				Kaj se čeka?
+			</Button>
+		</Card.Content>
+	</Card.Root>
+{/if}
 
 {#if finalize1DoneUsers?.length < numUsers}
 	<Card.Root class="w-full max-w-md m-auto text-center">
