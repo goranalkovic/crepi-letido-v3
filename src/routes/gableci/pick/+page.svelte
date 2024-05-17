@@ -9,6 +9,7 @@
 	import ShieldX from 'lucide-svelte/icons/shield-x';
 	import RouteOff from 'lucide-svelte/icons/route-off';
 	import ArrowRight from 'lucide-svelte/icons/arrow-right';
+	import Medal from 'lucide-svelte/icons/medal';
 
 	import { Button } from '$lib/components/ui/button';
 	import * as Card from '$lib/components/ui/card';
