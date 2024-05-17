@@ -1,6 +1,6 @@
 <script>
 	// @ts-nocheck
-	import { invalidateAll } from '$app/navigation';
+	import { goto, invalidateAll } from '$app/navigation';
 	import Vegan from 'lucide-svelte/icons/vegan';
 	import Phone from 'lucide-svelte/icons/phone';
 	import Truck from 'lucide-svelte/icons/truck';
@@ -57,6 +57,10 @@
 			.eq('user', user.email)
 			.gte('created', `${currentDate} 00:00:00`)
 			.lte('created', `${currentDate} 23:59:59`);
+
+		if (!unlock) {
+			goto('/gableci/vote');
+		}
 	};
 
 	$effect(() => {
