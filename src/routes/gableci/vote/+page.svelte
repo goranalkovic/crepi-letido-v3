@@ -96,9 +96,7 @@
 			</Button>
 		</Card.Content>
 	</Card.Root>
-{/if}
-
-{#if finalize1DoneUsers?.length < numUsers}
+{:else if finalize1DoneUsers?.length < numUsers}
 	<Card.Root class="w-full max-w-md m-auto text-center">
 		<Card.Header class="py-10">
 			<Hourglass class="mx-auto text-accent-foreground size-16 " />
