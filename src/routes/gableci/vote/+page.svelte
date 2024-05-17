@@ -76,11 +76,6 @@
 	<title>Final voting | ČL</title>
 </svelte:head>
 
-<Alert.Root class="max-w-sm">
-	<Alert.Title>Halo, halo, stani malo</Alert.Title>
-	<Alert.Description>Još nisam ful siguran kak ovo želim složiti, stvari se možda promijene u budućnosti.</Alert.Description>
-</Alert.Root>
-
 {#if displayedRestaurants?.length < 1}
 	<Card.Root class="w-full max-w-md m-auto text-center">
 		<Card.Header class="py-10">

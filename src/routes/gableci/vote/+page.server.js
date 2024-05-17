@@ -105,7 +105,7 @@ export const load = async ({ depends, locals: { supabase, user } }) => {
 			return 1;
 		});
 
-	const finalize1DoneUsers = existingData.filter(({ final }) => final === true);
+	const finalize1DoneUsers = existingData.filter(({ final, selected }) => final === true && Object.keys(selected ??{} ).length > 0);
 
 	const { data: currentUserHasFinalized1 } = await supabase
 		.from('meal-selections')

@@ -217,7 +217,7 @@
 	</Card.Root>
 {/if}
 
-{#if Object.keys(userSelections ?? {})?.length > 0}
+{#if Object.keys(userSelections ?? {})?.length > 0 && !currentUserHasFinalized1}
 	<div transition:scale={{ start: 0.85 }} class="fixed z-20 w-80 right-10 bottom-10">
 		<Card.Root class="shadow-lg">
 			<Card.Header>

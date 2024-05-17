@@ -57,6 +57,8 @@
 			.eq('user', user.email)
 			.gte('created', `${currentDate} 00:00:00`)
 			.lte('created', `${currentDate} 23:59:59`);
+			
+			await invalidateAll();
 
 		if (!unlock) {
 			await goto('/gableci/vote');

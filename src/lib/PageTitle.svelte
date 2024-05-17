@@ -25,7 +25,7 @@
 				Gablec overview
 			{:else if currentRoute === '/gableci/vote'}
 				<Vote class="mr-3 text-primary size-8" />
-				Final vote
+				Final vote <span class="text-md opacity-30 uppercase">beta</span>
 			{:else if currentRoute === '/crep-storm'}
 				<Tornado class="mr-3 text-primary size-8" />
 				Črep-storm™
