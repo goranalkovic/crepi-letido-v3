@@ -20,12 +20,15 @@
 	import { getCurrentDate } from '$lib/current-date.js';
 	import RestaurantCard from '$lib/RestaurantCard.svelte';
 
+	import { scale } from 'svelte/transition';
+
 	let { data } = $props();
 	let { supabase, restaurants, customRestaurants, hasError, user, userSelections: rawUserSelections, currentUserHasFinalized1 } = $derived(data);
 
 	const currentDate = getCurrentDate();
 
 	let userSelections = $derived(rawUserSelections.selected);
+	let customSelections = $state({});
 
 	const updateData = async () => {
 		if (!user?.email || !currentDate) {
@@ -49,6 +52,8 @@
 				[key]: newVals,
 			};
 		}, {});
+
+		customSelections = $state.snapshot(userSelections);
 
 		await supabase
 			.from('meal-selections')
@@ -82,6 +87,8 @@
 			.channel('pickerRestaurantDataSub')
 			.on('postgres_changes', { event: '*', schema: 'public', table: 'restaurants' }, async () => await invalidateAll())
 			.subscribe();
+
+		customSelections = userSelections;
 
 		return () => {
 			supabase.removeChannel(restaurantDataChannel);
@@ -216,7 +223,9 @@
 	</Card.Root>
 {/if}
 
-{#if Object.keys(userSelections ?? {})?.length > 0 && !currentUserHasFinalized1}
+{#if Object.values(customSelections ?? {})
+	.flat()
+	.findIndex(({ selected }) => selected) > -1 && !currentUserHasFinalized1}
 	<div transition:scale={{ start: 0.85 }} class="fixed z-20 w-80 right-10 bottom-10">
 		<Card.Root class="shadow-lg">
 			<Card.Header>
