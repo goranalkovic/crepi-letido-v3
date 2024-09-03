@@ -1,6 +1,6 @@
 {
 	"name": "crepi-letido-v3",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"private": true,
 	"scripts": {
 		"dev": "vite dev",
@@ -10,27 +10,30 @@
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json --watch"
 	},
 	"devDependencies": {
-		"@sveltejs/adapter-auto": "^3.2.0",
-		"@sveltejs/kit": "^2.5.9",
-		"@sveltejs/vite-plugin-svelte": "^3.1.0",
-		"@tailwindcss/typography": "^0.5.13",
-		"autoprefixer": "^10.4.19",
-		"postcss": "^8.4.38",
-		"svelte": "^5.0.0-next.136",
-		"svelte-check": "^3.7.1",
-		"tailwindcss": "^3.4.3",
-		"typescript": "^5.4.5",
-		"vite": "^5.2.11"
+		"@sveltejs/adapter-auto": "^3.2.4",
+		"@sveltejs/kit": "^2.5.25",
+		"@sveltejs/vite-plugin-svelte": "^4.0.0-next.6",
+		"@tailwindcss/typography": "^0.5.15",
+		"autoprefixer": "^10.4.20",
+		"postcss": "^8.4.44",
+		"svelte": "^5.0.0-next.243",
+		"svelte-check": "^4.0.0",
+		"tailwindcss": "^3.4.10",
+		"typescript": "^5.5.4",
+		"vite": "^5.4.3"
 	},
 	"type": "module",
 	"dependencies": {
-		"@supabase/ssr": "^0.3.0",
-		"@supabase/supabase-js": "^2.43.2",
-		"@sveltejs/adapter-netlify": "^4.2.0",
-		"bits-ui": "^0.21.7",
+		"@supabase/ssr": "^0.5.1",
+		"@supabase/supabase-js": "^2.45.3",
+		"@sveltejs/adapter-netlify": "^4.3.3",
+		"bits-ui": "^0.21.13",
 		"clsx": "^2.1.1",
-		"lucide-svelte": "^0.378.0",
-		"tailwind-merge": "^2.3.0",
+		"lucide-svelte": "^0.438.0",
+		"tailwind-merge": "^2.5.2",
 		"tailwind-variants": "^0.2.1"
+	},
+	"overrides": {
+		"@sveltejs/vite-plugin-svelte": "^4.0.0-next.6"
 	}
 }
