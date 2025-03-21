@@ -11,7 +11,7 @@ export const actions = {
 		const themeMode = formData.get('theme-mode');
 		const themeBorderRadius = formData.get('theme-border-radius');
 
-		const { error } = await supabase.from('users').update({
+		const { error } = await supabase.from('users').upsert({
 			avatar,
 			firstName,
 			lastName,
